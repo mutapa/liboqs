@@ -422,7 +422,7 @@ clean:	libclean
 	rm -f openssl.pc libssl.pc libcrypto.pc
 	rm -f speed.* .pure
 	rm -f $(TARFILE)
-	cd vendor/liboqs && $(MAKE) links
+	cd vendor/liboqs;make clean
 	@set -e; for i in $(ONEDIRS) ;\
 	do \
 	rm -fr $$i/*; \
@@ -452,7 +452,7 @@ links:
 	@set -e; target=links; $(RECURSIVE_BUILD_CMD)
 	@$(PERL) $(TOP)/util/mkdir-p.pl include/oqs
 	rm -f include/oqs/*.h
-	for i in $(LIBOQS_HEADERS) ;\
+	for i in $(LIBOQS_HEADERS) ;\
 	do \
 	ln -s ../../vendor/liboqs/include/oqs/$$i include/oqs; \
 	done
