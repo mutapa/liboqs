@@ -422,7 +422,7 @@ clean:	libclean
 	rm -f openssl.pc libssl.pc libcrypto.pc
 	rm -f speed.* .pure
 	rm -f $(TARFILE)
-	cd vendor/liboqs;make clean
+	cd vendor/liboqs
 	@set -e; for i in $(ONEDIRS) ;\
 	do \
 	rm -fr $$i/*; \
