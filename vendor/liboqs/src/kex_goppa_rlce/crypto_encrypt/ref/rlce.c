@@ -17,6 +17,8 @@
  */
 
 #include "rlce.h"
+#include "config.h"
+
 int RLCEspad(unsigned char bytes[],unsigned int BLen,
 	     unsigned char padded[], unsigned int paddedLen,
 	     RLCE_public_key_t pk,
