@@ -3,7 +3,7 @@
  * http://csrc.nist.gov/groups/ST/post-quantum-crypto/documents/example-files/api-notes.pdf
  */
 #include "api.h"
-#include "rlce.c"
+#include "rlce.h"
 #include <oqs/rand.h>
 
 //Signature matches that provided in rlce.h
