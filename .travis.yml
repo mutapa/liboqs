@@ -11,8 +11,6 @@ os:
 compiler:
     - clang
     - gcc
-    - i686-w64-mingw32-gcc
-    - x86_64-w64-mingw32-gcc
 
 env:
     - CONFIG_OPTS=""
@@ -22,12 +20,12 @@ env:
 matrix:
     exclude:
         - os: osx
-          compiler: i686-w64-mingw32-gcc
+          compiler: gcc
         - os: osx
-          compiler: x86_64-w64-mingw32-gcc
-        - compiler: i686-w64-mingw32-gcc
+          compiler: gcc
+        - compiler: gcc
           env: CONFIG_OPTS="-d --strict-warnings"
-        - compiler: x86_64-w64-mingw32-gcc
+        - compiler: gcc
           env: CONFIG_OPTS="-d --strict-warnings"
 
 before_script:
@@ -63,5 +61,3 @@ script:
           fi;
       fi
     - cd ..
-
-notifications:
