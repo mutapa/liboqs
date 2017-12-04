@@ -1,4 +1,4 @@
-#ifdef ENABLE_KEX_GOPPA_RLCE
+//#ifdef ENABLE_KEX_GOPPA_RLCE
 
 #if defined(WINDOWS)
 #define UNUSED
@@ -163,4 +163,4 @@ void OQS_KEX_goppa_rlce_free(OQS_KEX *k)
 
 }
 
-#endif
+//#endif
