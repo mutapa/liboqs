@@ -18,7 +18,7 @@
 #include <oqs/rand.h>
 
 #include "kex_goppa_rlce.h"
-#include "crypto_encrypt/ref/api.h"
+#include "kem.c"
 
 #if defined(WINDOWS)
 #define strdup _strdup // used for displaying strdup deprecated warning
