@@ -3,9 +3,6 @@
  *Header for Goppa-based RLCE protocol
  */
 
-#ifndef __OQS_KEX_GOPPA_RLCE_H
-#define __OQS_KEX_GOPPA_RLCE_H
-
 #include <stddef.h>
 #include <stdint.h>
 
@@ -20,5 +17,3 @@ int OQS_KEX_goppa_rlce_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t
 
 void OQS_KEX_goppa_rlce_alice_priv_free(OQS_KEX *k, void *alice_priv);
 void OQS_KEX_goppa_rlce_free(OQS_KEX *k);
-
-#endif
