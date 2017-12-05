@@ -14,6 +14,8 @@
 #define CRYPTO_PUBLICKEYBYTES 118441
 //#define CRYPTO_BYTES 785
 #define CRYPTO_ALGNAME “RLCE”
+#define CRYPTO_PADDING 1
+#define CRYPTO_CIPHERTEXTBYTES 16
 
 
 #include <oqs/rand.h>
