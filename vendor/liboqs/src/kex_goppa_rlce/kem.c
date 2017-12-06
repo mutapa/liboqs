@@ -54,6 +54,8 @@ int oqs_kex_goppa_rlce_encrypt(
   unsigned char *message=calloc(RLCEmlen, sizeof(unsigned char));
   //What should I do with mlen?
   mlen = 0;
+  //To prevent error:  parameter ‘mlen’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
+  if (mlen == 0) {}
   //Comment the line below until you find out how to replace ss with one of the input parameters
   //What is ss? What do I replace with between c and m?
   //memcpy(message, ss, CRYPTO_BYTES);
@@ -62,6 +64,8 @@ int oqs_kex_goppa_rlce_encrypt(
   unsigned long long ctlen=CRYPTO_CIPHERTEXTBYTES;
   //Should I use the clen from the input parameters or continue to use the one from the api.h?
   clen = 0;
+  //To prevent error: parameter ‘clen’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
+  if (clen == 0) {}
   unsigned char nonce[1];
   //Comment out the line below and replace ct with c. 
   //Assumption is that in the new mapping c is the cipherText
@@ -83,8 +87,12 @@ int oqs_kex_goppa_rlce_decrypt(
 	//What to do with mleng? Incompatible parameter types such as pointer size_t of type unsigned long and 
 	//mlen of type unsigned long long
 	mleng = 0;
+	//To prevent error: parameter ‘mleng’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
+	if (mleng == 0) {}
 	//What to do with clen?
 	clen = 0;
+	//To prevent error: parameter ‘clen’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
+	if (clen == 0) {}
   RLCE_private_key_t RLCEsk=B2sk(sk, CRYPTO_SECRETKEYBYTES);
   if (RLCEsk==NULL) return -1;
   //Lines commented out as parameters should come from the function body
