@@ -3,7 +3,6 @@
  * http://csrc.nist.gov/groups/ST/post-quantum-crypto/documents/example-files/api-notes.pdf
  */
 #include "api.h"
-#include "config.h"
 #include <oqs/rand.h>
 #include "rlce.h"
 
@@ -95,5 +94,3 @@ int oqs_kex_goppa_rlce_decrypt(
   memcpy(ss, message, CRYPTO_BYTES);
   return ret;
 	}
-
-

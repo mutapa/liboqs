@@ -19,6 +19,7 @@
 
 #include "kex_goppa_rlce.h"
 #include "kem.c"
+#include "config.h"
 
 
 #if defined(WINDOWS)
