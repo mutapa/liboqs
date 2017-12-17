@@ -35,7 +35,3 @@ int oqs_kex_goppa_rlce_gen_keypair(
     unsigned char *pk,
     unsigned char *sk,
     OQS_RAND *r);
-
-
-
-
