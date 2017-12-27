@@ -44,7 +44,6 @@ int oqs_kex_goppa_rlce_encrypt(
 	OQS_RAND_n(rand, randomness, RLCEpk->para[19]);
 	unsigned char *message = calloc(RLCEmlen, sizeof(unsigned char));
 	
-
 	if (clen == 0) {
 		return -1;
 	}
@@ -52,15 +51,23 @@ int oqs_kex_goppa_rlce_encrypt(
 	if (mlen == 0) {
 		return -1;
 	}
-	  
+		  
 	memcpy(message, m, mlen);
 	clen[0] = RLCEpk->para[16];
 	unsigned char nonce[1];
-	ret = RLCE_encrypt(message, RLCEmlen, (unsigned char *)randomness, RLCEpk->para[19], nonce, 0, RLCEpk, c, (unsigned long long *)clen);
+	ret = RLCE_encrypt(message, RLCEmlen, (unsigned char *)randomness, RLCEpk->para[19], nonce, 0, RLCEpk, c, (unsigned long long *) &clen);
 	free(message);
 	return ret;
 }
 
+/*
+ * PUBLIC KEY DECRYPTION
+ * ss = session key
+ * mlen = session key length
+ * cipherText = Bob's message
+ * clen = cipherText message length
+ * sk = Alice's private key for decryption
+*/
 int oqs_kex_goppa_rlce_decrypt(
 	unsigned char *ss, size_t *mlen,
 	const unsigned char *cipherText, unsigned long long clen,
@@ -73,14 +80,14 @@ int oqs_kex_goppa_rlce_decrypt(
 	if (mlen == 0)  {
 		return -1;
 	}
-	 
+		 
 	unsigned int para[PARASIZE];
 	ret = getRLCEparameters(para, CRYPTO_SCHEME, CRYPTO_PADDING);
 	RLCE_private_key_t RLCEsk=B2sk(sk, CRYPTO_SECRETKEYBYTES);
     if (RLCEsk==NULL) return -1;
     unsigned char message[RLCEsk->para[6]];
     mlen[0]=RLCEsk->para[6];
-    ret=RLCE_decrypt((unsigned char *)cipherText,para[CRYPTO_CIPHERTEXTBYTES],RLCEsk,message,(unsigned long long *)mlen);
+    ret=RLCE_decrypt((unsigned char *)cipherText,para[CRYPTO_CIPHERTEXTBYTES],RLCEsk,message,(unsigned long long *) mlen);
     if (ret<0) return ret;
     memcpy(ss, message, CRYPTO_BYTES);
     return ret;
