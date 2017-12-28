@@ -55,7 +55,7 @@ int oqs_kex_goppa_rlce_encrypt(
 	memcpy(message, m, CRYPTO_BYTES);
 	unsigned long long ctlen = CRYPTO_CIPHERTEXTBYTES;
 	unsigned char nonce[1];
-	ret = RLCE_encrypt(message, RLCEmlen, (unsigned char *)randomness, RLCEpk->para[19], nonce, 0, RLCEpk, c, &clen);
+	ret = RLCE_encrypt(message, RLCEmlen, (unsigned char *)randomness, RLCEpk->para[19], nonce, 0, RLCEpk, c, &ctlen);
 	free(message);
 	return ret;
 }
