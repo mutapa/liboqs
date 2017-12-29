@@ -10,9 +10,8 @@
 #include <oqs/kex_rlwe_newhope.h>
 #include <oqs/kex_sidh_cln16.h>
 
-#ifdef ENABLE_KEX_GOPPA_RLCE
-#include <oqs/kex_goppa_rlce.h>
-#endif
+#include <oqs/kex_rlce.h>
+
 
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
@@ -44,12 +43,10 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #else
 		assert(0);
 #endif
-#ifdef ENABLE_KEX_GOPPA_RLCE
+
     case OQS_KEX_alg_goppa_rlce:
-         return OQS_KEX_goppa_rlce_new(rand);
-#else
-        assert(0);
-#endif
+         return OQS_KEX_rlce_new(rand);
+
 	case OQS_KEX_alg_code_mcbits:
 #ifdef ENABLE_CODE_MCBITS
 		return OQS_KEX_code_mcbits_new(rand);

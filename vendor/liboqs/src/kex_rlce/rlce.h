@@ -140,6 +140,23 @@ void free_drbg_input(drbg_Input_t drbgInput);
 int hash_DRBG(hash_drbg_state_t drbgState, drbg_Input_t drbgInput,
 	      unsigned char output[], unsigned long outlen);
 
+ctr_drbg_state_t ctr_drbgstate_init(unsigned short aestype);
+void free_ctr_drbg_state(ctr_drbg_state_t ctr_drbgState);
+int ctr_DRBG_Instantiate_algorithm(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput);
+int ctr_DRBG_Generate(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
+		      unsigned char returned_bytes[],
+		      unsigned long req_no_of_bytes);
+int ctr_DRBG_Reseed(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput);
+int ctr_DRBG(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
+	     unsigned char output[], unsigned long outlen);
+int ctr_DRBG_DF(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
+		unsigned char output[], unsigned long outlen);
+
+int rs_encode (poly_t genPoly, poly_t message, poly_t code, int m);
+poly_t rs_decode(int decoder, poly_t code, int codelen, int codedim,
+		 field_t eLocation[], int m); /*eLocation[m-k]*/
+poly_t list_decode(field_t beta[], int n, int k, int t, int omega, int Lomega,
+		   field_t eLocation[], int m); /* eLocation[n-k] */
 
 int FFT(poly_t f, vector_t output, vector_t base, int m);
 /* output->size = 2^{base->size}*/
@@ -167,34 +184,57 @@ int RLCE_encrypt(unsigned char msg[], unsigned long long mLen,
 int RLCE_decrypt(unsigned char cipher[], unsigned long long clen, RLCE_private_key_t sk,
 		 unsigned char msg[], unsigned long long *mlen);
 
-
-
-
-
+/* GaloisField.h */
+extern short *GFlogTable[17];
+extern short *GFexpTable[17];
+extern short **GFmulTable[17];
+extern short **GFdivTable[17];
+extern int fieldOrder[17];
+extern int fieldSize[17];
+extern int GF_init_logexp_table(int m); /* 0 on success, -1 on failure */
 extern field_t GF_mul(field_t x, field_t y, int m);
+field_t GF_tablediv(field_t x, field_t y, int m);
+extern int GF_init_mult_table(int m);
 void GF_expvec(field_t vec[], int size, int m);
+void GF_vec_winograd(field_t x, field_t vec[],matrix_t B,matrix_t tmp, unsigned int m);
 void GF_mulvec(field_t x, field_t vec[], field_t dest[],int dsize, unsigned int m);
 void GF_vecdiv(field_t x, field_t vec[], field_t dest[],int dsize, unsigned int m);
+void GF_mulexpvec2(field_t x, field_t vec[], field_t dest[],int dsize, unsigned int m);
 void GF_logmulvec(int xlog, field_t vec[], field_t dest[],int dsize, unsigned int m);
 void GF_vecinverse(field_t vec1[], field_t vec2[], int vecsize, int m);
 extern int GF_addvec(field_t vec1[], field_t vec2[],field_t vec3[], int vecSize);
+int GF_addF2vec(field_t x, field_t vec2[],field_t vec3[], int vecSize);
+void GF_divvec(field_t vec1[],field_t vec2[], int vsize, unsigned int m);
+int GF_vecreversemul(field_t vec1[],field_t vec2[],int vsize,int m);
+void GF_evalpoly(int log, poly_t p, field_t input[], field_t output[], int size, int m);
+void GF_rsgenerator2optG(matrix_t optG, poly_t generator, field_t randE[], int m);
 void GF_vecvecmul(field_t v1[], field_t v2[], field_t v3[], int vsize, unsigned int m);
-void getGenPoly (int deg, poly_t g, int m);
+void rootsLocation(field_t rts[],int nRts,field_t eLoc[],field_t rtLog[],int m);
 void GF_mulAinv(field_t cp[], matrixA_t A, field_t C1[], int m);
+void GF_x2px(field_t vec[], field_t dest[], int size, int m);
 extern field_t GF_fexp(field_t x, int y, int m);
-extern field_t GF_div(field_t x, field_t y, int m);
-extern int GF_log(field_t x, int m);
-extern field_t GF_exp(int x, int m);
+extern void GF_print_log(int m);
+#define GF_exp(x,m) GFexpTable[m][x]
+#define GF_log(x,m) GFlogTable[m][x]
+#define GF_div(x, y,m) ((x) ?  GFexpTable[m][GFlogTable[m][x]+fieldOrder[m]-GFlogTable[m][y]]:0)
+#define GF_tablemul(x,y,m) GFmulTable[m][x][y]
+#define GF_mulx(x,y,m) ((y)?GFexpTable[m][GFlogTable[m][x]+GFlogTable[m][y]]:0)
+#define GF_regmul(x,y,m) ((x)?GF_mulx(x,y,m):0)
+//#define GF_mul(x,y,m) ((GFMULTAB)?GF_tablemul(x,y,m):GF_regmul(x,y,m))
+
+void printArray(unsigned char toBeprint[], int len);
+
 
 poly_t poly_init(int size);
-void poly_clear(poly_t p);
 void poly_zero(poly_t p);
 void poly_copy(poly_t p, poly_t dest);
-void poly_print(poly_t p);
 void poly_free(poly_t p);
 field_t poly_eval(poly_t p, field_t a, int m);
+field_t poly_evalopt(poly_t p, field_t a, int m);
 int poly_mul(poly_t f, poly_t g, poly_t r, int m);
 int poly_mul_standard(poly_t p, poly_t q, poly_t r, int m);
+int poly_mul_karatsuba(poly_t f, poly_t g, poly_t r, int m);
+int poly_mul_FFT(poly_t p, poly_t q, poly_t r, int m);
 int poly_div(poly_t p, poly_t d, poly_t q, poly_t dest, int m);
 int poly_add(poly_t p, poly_t q, poly_t dest);
 int poly_deg(poly_t p);
@@ -202,6 +242,9 @@ int poly_quotient (poly_t p, poly_t d, poly_t q, int m);
 int poly_gcd(poly_t p1, poly_t p2, poly_t gcd, int m);
 int find_roots (poly_t lambda, field_t roots[], field_t eLocation[], int m);
 int find_roots_Chien (poly_t p, field_t roots[], field_t eLocation[],int m);
+int find_roots_exhaustive (poly_t p, field_t roots[], int m);
+int find_roots_BTA(poly_t p, field_t pRoots[], int m);
+int find_roots_FFT(poly_t lambda, field_t roots[], int m); 
 
 matrix_t matrix_init(int r, int c);
 void matrix_free(matrix_t A);
@@ -212,10 +255,10 @@ int vector_copy(vector_t v, vector_t dest);
 matrixA_t matrixA_init(int size);
 void matrixA_free(matrixA_t A);
 int matrix_col_permutation(matrix_t A, vector_t per);
-matrix_t matrix_mul_A(matrix_t U, matrixA_t A, int start, int m);
-int matrix_inv(matrix_t G, matrix_t Ginv, int m);
+int matrix_opt_mul_A(matrix_t G, matrixA_t A, int startP, int m);
 int matrix_echelon(matrix_t G, int m);
 matrix_t matrix_join(matrix_t G, matrix_t R);
+int matrixA_copy(matrixA_t mat, matrixA_t dest);
 int RLCE_MGF512(unsigned char mgfseed[], int mgfseedLen,
 		unsigned char mask[], int maskLen);
 int RLCE_MGF(unsigned char mgfseed[], int mgfseedLen,
@@ -224,7 +267,6 @@ int RLCE_MGF(unsigned char mgfseed[], int mgfseedLen,
 vector_t vec_init(int n);
 void vector_free(vector_t v);
 vector_t permu_inv(vector_t p);
-int getRandomMatrix(matrix_t mat, field_t randE[]);
 vector_t getPermutation(int size, int t, unsigned char randBytes[], int nRB);
 int randomBytes2FE(unsigned char randomBytes[], int nRB,
 		   field_t output[], int outputSize, int m);
@@ -239,12 +281,14 @@ int getRandomBytes(unsigned char seed[], int seedSize,
 
 void I2BS (unsigned int X, unsigned char S[], int slen);
 int BS2I (unsigned char S[], int slen);
+int B2FE9 (unsigned char bytes[], unsigned int BLen, vector_t FE);
+int FE2B9 (vector_t FE, unsigned char bytes[], unsigned int BLen);
 int B2FE10 (unsigned char bytes[], unsigned int BLen, vector_t FE);
 int FE2B10 (vector_t FE, unsigned char bytes[], unsigned int BLen);
 int B2FE11 (unsigned char bytes[], unsigned int BLen, vector_t FE);
 int FE2B11 (vector_t FE, unsigned char bytes[], unsigned int BLen);
-
-
+int B2FE12 (unsigned char bytes[], unsigned int BLen, vector_t FE);
+int FE2B12 (vector_t FE, unsigned char bytes[], unsigned int BLen);
 
 #define GFTABLEERR -6
 #define TESTERROR -7

@@ -8,7 +8,7 @@
 #include "rlce.h"
 
  //Signature matches that provided in rlce.h
-int oqs_kex_goppa_rlce_gen_keypair(
+int oqs_kex_rlce_gen_keypair(
 	unsigned char *pk,
 	unsigned char *sk,
 	OQS_RAND *rand) {
@@ -31,7 +31,7 @@ int oqs_kex_goppa_rlce_gen_keypair(
 }
 
 
-int oqs_kex_goppa_rlce_encrypt(
+int oqs_kex_rlce_encrypt(
 	unsigned char *c, size_t *clen,
 	const unsigned char *m, unsigned long long mlen,
 	const unsigned char *pk,
@@ -43,15 +43,15 @@ int oqs_kex_goppa_rlce_encrypt(
 	unsigned char randomness[RLCEpk->para[19]];
 	OQS_RAND_n(rand, randomness, RLCEpk->para[19]);
 	unsigned char *message = calloc(RLCEmlen, sizeof(unsigned char));
-	
+
 	clen = 0;
 	//To prevent error: parameter ‘clen’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
 	if (clen == 0) {}
-	 
+
 	mlen = 0;
 	//To prevent error:  parameter ‘mlen’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
 	if (mlen == 0) {}
-		  
+
 	memcpy(message, m, CRYPTO_BYTES);
 	unsigned long long ctlen = CRYPTO_CIPHERTEXTBYTES;
 	unsigned char nonce[1];
@@ -62,18 +62,18 @@ int oqs_kex_goppa_rlce_encrypt(
 
 /*
  * PUBLIC KEY DECRYPTION
- * ss = session key
- * mlen = session key length
- * cipherText = Bob's message
+ * ss = shared secret or message to decrypt
+ * mlen = message length
+ * cipherText = Bob's encrypted cipherText message
  * clen = cipherText message length
  * sk = Alice's private key for decryption
 */
-int oqs_kex_goppa_rlce_decrypt(
+int oqs_kex_rlce_decrypt(
 	unsigned char *ss, size_t *mleng,
 	const unsigned char *cipherText, unsigned long long clen,
 	const unsigned char *sk) {
 	int ret;
-	 
+
 	//To prevent error: parameter ‘mleng’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
 	if (mleng == 0) {}
 	//Unused parameter

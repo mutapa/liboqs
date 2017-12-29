@@ -4,14 +4,12 @@
  * Department of Software and Information Systems
  * UNC Charlotte
  * Charlotte, NC 28223
- * yonwang@uncc.edu 
+ * yonwang@uncc.edu
  */
 #ifndef _CONFIGH_
 #define _CONFIGH_
 
-#define DECODINGMETHOD 1 /* 0:include S; 1:2: W^{-1}; 2: no help matrix  */
-#define PARASIZE 20 /* plese do not change!!!!!                      */
-#define TESTCONFIG 0
+#define DECODINGMETHOD 1 /* 0:include S; 1: W^{-1}; 2: no help matrix  */
 /* FOLLOWING PARAMETER HAS BEEN OPTIMIZED FOR 64-BIT CPUS.                 *
  * DO NOT CHANGE UNLESS YOU ARE USING 32-BITS OR 16-BITS CPUS              */
 #define GFMULTAB 1        /* 0: No Mul-TABLE; 1: GF multiplication-table   */
@@ -23,5 +21,6 @@
 #define MATRIXMUL 0       /* 0: standard mat*mat; 1: strassen; 2: Winograd */
 #define MATINV 0          /* 0: standard mat-inv; 1: strassen              */
 #define STRASSENCONST 750 /* mat-dim below this use standard multi.        */
-#define STRAINVCONST 500  /* mat-dim below this use standard inverse       */      
+#define STRAINVCONST 500  /* mat-dim below this use standard inverse       */
+#define PARASIZE 20       /* plese do not change!!!!!                      */
 #endif 

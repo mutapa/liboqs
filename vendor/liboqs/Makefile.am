@@ -21,7 +21,7 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kex/libkex.la
-liboqs_la_LIBADD += src/kex_goppa_rlce/libgopparlce.la
+liboqs_la_LIBADD += src/kex_rlce/librlce.la
 if USE_KEX_LWE_FRODO
 liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
 endif
@@ -148,7 +148,7 @@ links:
 	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	cp -f src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	cp -f src/sig/sig.h include/oqs
-	cp -f src/kex_goppa_rlce/kex_goppa_rlce.h include/oqs
+	cp -f src/kex_rlce/kex_rlce.h include/oqs
 if USE_PICNIC
 if USE_OPENSSL
 	cp -f src/sig_picnic/external/Picnic-master/picnic.h include/oqs

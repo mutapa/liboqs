@@ -1,5 +1,3 @@
-//#ifdef ENABLE_KEX_GOPPA_RLCE
-
 #if defined(WINDOWS)
 #define UNUSED
 // __attribute__ VisualStudio does not support
@@ -17,22 +15,22 @@
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 
-#include "kex_goppa_rlce.h"
-#include "kem.c"
+#include "kex_rlce.h"
 #include "config.h"
+#iclude "kem.c"
 
 
 #if defined(WINDOWS)
 #define strdup _strdup // used for displaying strdup deprecated warning
 #endif
 
-OQS_KEX *OQS_KEX_goppa_rlce_new(OQS_RAND *rand)
+OQS_KEX *OQS_KEX_rlce_new(OQS_RAND *rand)
 {
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
 	if (k == NULL) {
 		return NULL;
 	}
-	k->method_name = strdup("Goppa RLCE");
+	k->method_name = strdup("RLCE");
 	k->estimated_classical_security = 0; //TODO :
 	k->estimated_quantum_security = 0;   //TODO :
 	k->seed = NULL;
@@ -40,17 +38,17 @@ OQS_KEX *OQS_KEX_goppa_rlce_new(OQS_RAND *rand)
 	k->named_parameters = 0;
 	k->rand = rand;
 	k->params = NULL;
-	k->alice_0 = & OQS_KEX_goppa_rlce_alice_0;
-	k->bob = &OQS_KEX_goppa_rlce_bob;
-	k->alice_1 = &OQS_KEX_goppa_rlce_alice_1;
-	k->alice_priv_free = &OQS_KEX_goppa_rlce_alice_priv_free;
-	k->free = &OQS_KEX_goppa_rlce_free;
+	k->alice_0 = & OQS_KEX_rlce_alice_0;
+	k->bob = &OQS_KEX_rlce_bob;
+	k->alice_1 = &OQS_KEX_rlce_alice_1;
+	k->alice_priv_free = &OQS_KEX_rlce_alice_priv_free;
+	k->free = &OQS_KEX_rlce_free;
 	return k;
 
 }
 
 //generates the keys
-int OQS_KEX_goppa_rlce_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len)
+int OQS_KEX_rlce_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len)
 {
 
 	int ret;
@@ -67,10 +65,8 @@ int OQS_KEX_goppa_rlce_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **a
 	}
 
 	/* generate public/private key pair */
-
-
-	//Matches the method signature defined in rlce.h
-	oqs_kex_goppa_rlce_gen_keypair(*alice_msg, *alice_priv, k->rand);
+	//Matches the method signature defined in kem.c
+	oqs_kex_rlce_gen_keypair(*alice_msg, *alice_priv, k->rand);
 
 	ret = 1;
 	goto cleanup;
@@ -88,7 +84,7 @@ cleanup:
 
 }
 
-int OQS_KEX_goppa_rlce_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, UNUSED const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len)
+int OQS_KEX_rlce_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, UNUSED const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len)
 {
 int ret;
 
@@ -102,7 +98,7 @@ int ret;
 		goto err;
 	}
 	OQS_RAND_n(k->rand, *key, 32);
-	oqs_kex_goppa_rlce_encrypt(*bob_msg, bob_msg_len, *key, 32, alice_msg, k->rand);
+	oqs_kex_rlce_encrypt(*bob_msg, bob_msg_len, *key, 32, alice_msg, k->rand);
 	*key_len = 32;
 
 	ret = 1;
@@ -119,7 +115,7 @@ cleanup:
 
 }
 
-int OQS_KEX_goppa_rlce_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, UNUSED const size_t bob_msg_len, uint8_t **key, size_t *key_len)
+int OQS_KEX_rlce_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, UNUSED const size_t bob_msg_len, uint8_t **key, size_t *key_len)
 {
 int ret;
 
@@ -128,7 +124,7 @@ int ret;
 	if (*key == NULL) {
 		goto err;
 	}
-	oqs_kex_goppa_rlce_decrypt(*key, key_len, bob_msg, CRYPTO_BYTES + 32, alice_priv);
+	oqs_kex_rlce_decrypt(*key, key_len, bob_msg, CRYPTO_BYTES + 32, alice_priv);
 
 	ret = 1;
 	goto cleanup;
@@ -144,7 +140,7 @@ cleanup:
 }
 
 
-void OQS_KEX_goppa_rlce_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv)
+void OQS_KEX_rlce_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv)
 {
 	if (alice_priv)
 	{
@@ -153,7 +149,7 @@ void OQS_KEX_goppa_rlce_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv)
 }
 
 
-void OQS_KEX_goppa_rlce_free(OQS_KEX *k)
+void OQS_KEX_rlce_free(OQS_KEX *k)
 {
 	if (k) {
 		free(k->named_parameters);

@@ -93,3 +93,8 @@ stamp-h1
 #params
 sample_params
 data/
+
+#testing
+old
+crypto_encrypt
+
