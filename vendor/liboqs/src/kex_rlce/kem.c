@@ -1,4 +1,4 @@
-/* 
+/*
  * https://bench.cr.yp.to/call-encrypt.html
  * http://csrc.nist.gov/groups/ST/post-quantum-crypto/documents/example-files/api-notes.pdf
  */
@@ -7,7 +7,11 @@
 #include <oqs/rand.h>
 #include "rlce.h"
 
- //Signature matches that provided in rlce.h
+/*
+ * GENERATE KEY PAIR
+ * pk = public key
+ * sk = private or secret key
+ */
 int oqs_kex_rlce_gen_keypair(
 	unsigned char *pk,
 	unsigned char *sk,
@@ -30,10 +34,17 @@ int oqs_kex_rlce_gen_keypair(
 	return ret;
 }
 
-
+/*
+ * PUBLIC KEY ENCRYPTION
+ * ct = cipherText returned after encryption
+ * clen = message of cipherText message
+ * ss = shared secret or Bob's unencrypted message
+ * mlen = shared secret message length
+ * pk = Alice's public key
+ */
 int oqs_kex_rlce_encrypt(
-	unsigned char *c, size_t *clen,
-	const unsigned char *m, unsigned long long mlen,
+	unsigned char *ct, size_t *clen,
+	const unsigned char *ss, unsigned long long mlen,
 	const unsigned char *pk,
 	OQS_RAND *rand) {
 	int ret;
@@ -52,41 +63,41 @@ int oqs_kex_rlce_encrypt(
 	//To prevent error:  parameter ‘mlen’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
 	if (mlen == 0) {}
 
-	memcpy(message, m, CRYPTO_BYTES);
+	memcpy(message, ss, CRYPTO_BYTES);
 	unsigned long long ctlen = CRYPTO_CIPHERTEXTBYTES;
 	unsigned char nonce[1];
-	ret = RLCE_encrypt(message, RLCEmlen, (unsigned char *)randomness, RLCEpk->para[19], nonce, 0, RLCEpk, c, &ctlen);
+	ret = RLCE_encrypt(message, RLCEmlen, (unsigned char *)randomness, RLCEpk->para[19], nonce, 0, RLCEpk, ct, &ctlen);
 	free(message);
 	return ret;
 }
 
 /*
  * PUBLIC KEY DECRYPTION
- * ss = shared secret or message to decrypt
- * mlen = message length
- * cipherText = Bob's encrypted cipherText message
+ * ss = shared secret or message returned after decryption
+ * mleng = message length
+ * ct = Bob's encrypted cipherText message
  * clen = cipherText message length
  * sk = Alice's private key for decryption
 */
 int oqs_kex_rlce_decrypt(
 	unsigned char *ss, size_t *mleng,
-	const unsigned char *cipherText, unsigned long long clen,
+	const unsigned char *ct, unsigned long long clen,
 	const unsigned char *sk) {
 	int ret;
 
+    mleng = 0;
 	//To prevent error: parameter ‘mleng’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
 	if (mleng == 0) {}
 	//Unused parameter
 	clen = 0;
 	//To prevent error: parameter ‘clen’ set but not used [-Werror=unused-but-set-parameter] on gcc compiler
 	if (clen == 0) {}
-	unsigned int para[PARASIZE];
-	ret = getRLCEparameters(para, CRYPTO_SCHEME, CRYPTO_PADDING);
+
 	RLCE_private_key_t RLCEsk=B2sk(sk, CRYPTO_SECRETKEYBYTES);
     if (RLCEsk==NULL) return -1;
     unsigned char message[RLCEsk->para[6]];
 	unsigned long long mlen = RLCEsk->para[6];
-    ret=RLCE_decrypt((unsigned char *)cipherText,para[CRYPTO_CIPHERTEXTBYTES],RLCEsk,message, &mlen);
+    ret=RLCE_decrypt((unsigned char *)ct,CRYPTO_CIPHERTEXTBYTES,RLCEsk,message, &mlen);
     if (ret<0) return ret;
     memcpy(ss, message, CRYPTO_BYTES);
     return ret;
