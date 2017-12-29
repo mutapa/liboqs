@@ -7,7 +7,7 @@ matrix:
   - os: linux
     compiler: gcc
     env:
-    - ENABLE_KEX_GOPPA_RLCE=1
+    - ENABLE_KEX_RLCE=1
     - ENABLE_SIDH_IQC_REF=0
     - ENABLE_KEX_LWE_FRODO=0
     - ENABLE_KEX_MLWE_KYBER=0

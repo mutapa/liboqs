@@ -44,8 +44,12 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 		assert(0);
 #endif
 
-    case OQS_KEX_alg_goppa_rlce:
+#ifdef ENABLE_KEX_RLCE
+    case OQS_KEX_alg_rlce:
          return OQS_KEX_rlce_new(rand);
+#else
+         assert(0);
+#endif
 
 	case OQS_KEX_alg_code_mcbits:
 #ifdef ENABLE_CODE_MCBITS

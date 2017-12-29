@@ -17,8 +17,9 @@
 
 #include "kex_rlce.h"
 #include "config.h"
-#include "kem.c"
 #include "api.h"
+#include "kem.c"
+
 
 
 #if defined(WINDOWS)
