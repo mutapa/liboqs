@@ -1,4 +1,4 @@
-/* kem.c --> rlce.c
+/* 
  * https://bench.cr.yp.to/call-encrypt.html
  * http://csrc.nist.gov/groups/ST/post-quantum-crypto/documents/example-files/api-notes.pdf
  */
