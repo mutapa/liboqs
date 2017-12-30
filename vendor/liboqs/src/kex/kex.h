@@ -133,7 +133,7 @@ struct OQS_KEX {
 	 */
 	void (*free)(OQS_KEX *k);
 
-} 
+};
 
 /**
  * Allocate a new key exchange object.
