@@ -8,8 +8,7 @@ addons:
 os:
     - linux
 
-compiler:
-    - clang
+compiler:   
     - gcc
     
 
