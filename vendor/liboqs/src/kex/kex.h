@@ -26,12 +26,12 @@ enum OQS_KEX_alg_name {
 	OQS_KEX_alg_rlce
 };
 
-//typedef struct OQS_KEX OQS_KEX;
+typedef struct OQS_KEX OQS_KEX;
 
 /**
  * OQS key exchange object
  */
-typedef struct OQS_KEX {
+struct OQS_KEX {
 
 	/**
 	 * PRNG
@@ -133,7 +133,7 @@ typedef struct OQS_KEX {
 	 */
 	void (*free)(OQS_KEX *k);
 
-} OQS_KEX;
+} 
 
 /**
  * Allocate a new key exchange object.
