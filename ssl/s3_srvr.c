@@ -2963,7 +2963,7 @@ int ssl3_get_client_key_exchange(SSL *s)
             s->s3->tmp.oqskex_kex = NULL;
             s->s3->tmp.oqskex_rand = NULL;
 
-            // FIXME: I have no idea if this is safe, as I don't know how big p is, but let's try it anyway for testing purposes.
+            /* FIXME: I have no idea if this is safe, as I don't know how big p is, but let's try it anyway for testing purposes. */
             memcpy(p + i, pprime_oqskex, nprime_oqskex);
             i += nprime_oqskex;
             OPENSSL_free(pprime_oqskex);
