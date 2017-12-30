@@ -23,10 +23,10 @@ enum OQS_KEX_alg_name {
 	OQS_KEX_alg_ntru,
 	OQS_KEX_alg_sidh_iqc_ref,
 	OQS_KEX_alg_mlwe_kyber,
-	OQS_KEX_alg_rlce,
+	OQS_KEX_alg_rlce
 };
 
-typedef struct OQS_KEX OQS_KEX;
+//typedef struct OQS_KEX OQS_KEX;
 
 /**
  * OQS key exchange object
