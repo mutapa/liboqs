@@ -24,11 +24,9 @@ matrix:
           compiler: gcc
         - os: osx
           compiler: gcc
-        - compiler: gcc
-          env: CONFIG_OPTS="-d --strict-warnings"
-        - compiler: gcc
-          env: CONFIG_OPTS="-d --strict-warnings"
-
+        - os: osx
+          compiler: clang
+       
 before_script:
     - sh .travis-create-release.sh $TRAVIS_OS_NAME
     - tar -xvzf _srcdist.tar.gz
