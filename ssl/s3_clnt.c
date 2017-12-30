@@ -3085,7 +3085,7 @@ int ssl3_send_client_key_exchange(SSL *s)
                     goto err;
                 }
 
-                // FIXME: I have no idea if this is safe, as I don't know how big p is, but let's try it anyway for testing purposes.
+                /* FIXME: I have no idea if this is safe, as I don't know how big p is, but let's try it anyway for testing purposes. */
                 memcpy(p + n, pprime_oqskex, nprime_oqskex);
                 n += nprime_oqskex;
                 OPENSSL_free(pprime_oqskex);
