@@ -267,6 +267,7 @@ static const SSL_CIPHER cipher_aliases[] = {
     {0, SSL_TXT_kOQSKEX_RLWE_MSRLN16, 0, SSL_kOQSKEX_RLWE_MSRLN16, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, SSL_TXT_kOQSKEX_LWE_FRODO_RECOMMENDED, 0, SSL_kOQSKEX_LWE_FRODO_RECOMMENDED, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, SSL_TXT_kOQSKEX_SIDH_CLN16, 0, SSL_kOQSKEX_SIDH_CLN16, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 0, SSL_TXT_kOQSKEX_SIDH_RLCE, 0, SSL_kOQSKEX_RLCE, 0, 0, 0, 0, 0, 0, 0, 0 },
 
     {0, SSL_TXT_kPSK, 0, SSL_kPSK, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, SSL_TXT_kSRP, 0, SSL_kSRP, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -313,6 +314,8 @@ static const SSL_CIPHER cipher_aliases[] = {
     {0, SSL_TXT_OQSKEX_LWE_FRODO_RECOMMENDED_ECDHE, 0, SSL_kEECDH|SSL_kOQSKEX_LWE_FRODO_RECOMMENDED, ~SSL_aNULL, 0, 0, 0, 0, 0, 0, 0},
     {0, SSL_TXT_OQSKEX_SIDH_CLN16, 0, SSL_kOQSKEX_SIDH_CLN16, ~SSL_aNULL, 0, 0, 0, 0, 0, 0, 0},
     {0, SSL_TXT_OQSKEX_SIDH_CLN16_ECDHE, 0, SSL_kEECDH|SSL_kOQSKEX_SIDH_CLN16, ~SSL_aNULL, 0, 0, 0, 0, 0, 0, 0},
+	{ 0, SSL_TXT_OQSKEX_RLCE, 0, SSL_kOQSKEX_RLCE, ~SSL_aNULL, 0, 0, 0, 0, 0, 0, 0 },
+	{ 0, SSL_TXT_OQSKEX_RLCE_ECDHE, 0, SSL_kEECDH | SSL_kOQSKEX_RLCE, ~SSL_aNULL, 0, 0, 0, 0, 0, 0, 0 },
 
     /* symmetric encryption aliases */
     {0, SSL_TXT_DES, 0, 0, 0, SSL_DES, 0, 0, 0, 0, 0, 0},
@@ -1778,6 +1781,9 @@ char *SSL_CIPHER_description(const SSL_CIPHER *cipher, char *buf, int len)
     case SSL_kOQSKEX_SIDH_CLN16:
         kx = "OQSKEX-SIDH-CLN16";
         break;
+	case SSL_kOQSKEX_RLCE:
+		kx = "OQSKEX-RLCE";
+		break;
     case SSL_kPSK:
         kx = "PSK";
         break;
