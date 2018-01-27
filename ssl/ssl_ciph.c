@@ -1055,16 +1055,18 @@ static void ssl_cipher_apply_rule(unsigned long cipher_id,
             if ((alg_mkey & SSL_kEECDH) && (alg_mkey ^ SSL_kEECDH)) {
                 if (!(cp->algorithm_mkey & SSL_kEECDH)) 
                     continue;
-                unsigned long alg_mkey_sans_EECDH = alg_mkey ^ SSL_kEECDH;
-                if (!(cp->algorithm_mkey & alg_mkey_sans_EECDH)) 
-                    continue;
+				{unsigned long alg_mkey_sans_EECDH = alg_mkey ^ SSL_kEECDH;
+				if (!(cp->algorithm_mkey & alg_mkey_sans_EECDH))
+					continue;
+				}
             }
             if ((cp->algorithm_mkey & SSL_kEECDH) && (cp->algorithm_mkey ^ SSL_kEECDH)) {
                 if (!(alg_mkey & SSL_kEECDH)) 
                     continue;
-                unsigned long cp_alg_mkey_sans_EECDH = cp->algorithm_mkey ^ SSL_kEECDH;
-                if (!(alg_mkey & cp_alg_mkey_sans_EECDH)) 
-                    continue;
+				{ unsigned long cp_alg_mkey_sans_EECDH = cp->algorithm_mkey ^ SSL_kEECDH;
+				if (!(alg_mkey & cp_alg_mkey_sans_EECDH))
+					continue;
+				}
             }
             if (alg_auth && !(alg_auth & cp->algorithm_auth))
                 continue;
