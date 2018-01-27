@@ -1910,7 +1910,7 @@ int ssl3_send_server_key_exchange(SSL *s)
         } else
 #endif                          /* !OPENSSL_NO_ECDH */
 #ifndef OPENSSL_NO_OQSKEX
-        if (((type & SSL_kOQSKEX_GENERIC) || (type & SSL_kOQSKEX_RLWE_BCNS15) || (type & SSL_kOQSKEX_RLWE_NEWHOPE) || (type & SSL_kOQSKEX_RLWE_MSRLN16) || (type & SSL_kOQSKEX_LWE_FRODO_RECOMMENDED) || (type & SSL_kOQSKEX_SIDH_CLN16)) && !(type & SSL_kEECDH)) {
+        if (((type & SSL_kOQSKEX_GENERIC) || (type & SSL_kOQSKEX_RLCE) || (type & SSL_kOQSKEX_RLWE_BCNS15) || (type & SSL_kOQSKEX_RLWE_NEWHOPE) || (type & SSL_kOQSKEX_RLWE_MSRLN16) || (type & SSL_kOQSKEX_LWE_FRODO_RECOMMENDED) || (type & SSL_kOQSKEX_SIDH_CLN16)) && !(type & SSL_kEECDH)) {
             if ((s->s3->tmp.oqskex_rand = OQS_RAND_new(OQS_RAND_alg_default)) == NULL) {
                 SSLerr(SSL_F_SSL3_SEND_SERVER_KEY_EXCHANGE,ERR_R_MALLOC_FAILURE);
                 goto err;
