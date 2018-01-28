@@ -2,6 +2,6 @@ fAUTOMAKE_OPTIONS = foreign
 noinst_LTLIBRARIES = librlce.la
 
 
-librlce_la_SOURCES = kex_rlce.c 
+librlce_la_SOURCES = kex_rlce.c kem.c rlce.c rng.c sha.c reedsolomon.c PQCgenKAT_kem.c GaloisField.c fieldPoly.c fieldMatrix.c FFT.c drbg.c bta.c aes.c
 librlce_la_CPPFLAGS = -I../../include
 librlce_la_CPPFLAGS += $(AM_CPPFLAGS) 

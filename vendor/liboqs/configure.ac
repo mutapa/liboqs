@@ -164,6 +164,9 @@ SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand
 SRCDIR=${SRCDIR}" src/kex"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15"
 
+SRCDIR=${SRCDIR}" src/kex_rlce"
+AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLCE"
+
 if test x"$kex_lwe_frodo" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_LWE_FRODO"
@@ -242,9 +245,10 @@ AC_SUBST(USE_KEX_MLWE_KYBER)
 AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_CLN16)
+AC_SUBST(USE_KEX_RLCE)
 AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
-AC_SUBST(USE_KEX_RLCE)
+
 
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile
