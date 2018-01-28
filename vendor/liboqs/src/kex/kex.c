@@ -11,6 +11,7 @@
 #include <oqs/kex_sidh_cln16.h>
 
 #include <oqs/kex_rlce.h>
+#include <stdio.h>
 
 
 #ifdef ENABLE_CODE_MCBITS
@@ -102,6 +103,7 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #endif
 	default:
 		assert(0);
+		printf("Algorithm used is: %s\n", named_parameters);
 		return NULL;
 	}
 }
