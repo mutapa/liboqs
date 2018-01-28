@@ -21,9 +21,9 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kex/libkex.la
-if USE_KEX_RLCE
+
 liboqs_la_LIBADD += src/kex_rlce/librlce.la
-endif
+
 if USE_KEX_LWE_FRODO
 liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
 endif
