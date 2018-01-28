@@ -31,6 +31,11 @@ if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
   fi
 fi
 
+
+if [[ ${ENABLE_KEX_RLCE} == 1 ]];then
+  enable_disable_str+=" --enable-kex-rlce"
+fi
+
 if [[ ${ENABLE_KEX_LWE_FRODO} == 0 ]];then
   enable_disable_str+=" --disable-kex-lwe-frodo"
 fi

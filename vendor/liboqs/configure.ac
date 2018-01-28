@@ -131,7 +131,9 @@ ARG_DISBL_SET([kex-sidh-cln16], [disable KEX-SIDH-CLN16.])
 AM_CONDITIONAL([kex_sidh_cln16], [test "x$kex_sidh_cln16" = xtrue])
 AM_CONDITIONAL([USE_KEX_SIDH_CLN16], [test "x$kex_sidh_cln16" = xtrue])
 
-
+ARG_ENABL_SET([kex-rlce], [enable KEX-RLCE.])
+AM_CONDITIONAL([kex_rlce], [test "x$kex_rlce" = xtrue])
+AM_CONDITIONAL([USE_KEX_RLCE], [test "x$kex_rlce" = xtrue])
 AC_CANONICAL_HOST
 
 # Check for which host we are on and setup a few things
@@ -161,7 +163,6 @@ SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand
 # KEX
 SRCDIR=${SRCDIR}" src/kex"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15"
-SRCDIR=${SRCDIR}" src/kex_rlce"
 
 if test x"$kex_lwe_frodo" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
@@ -191,6 +192,11 @@ fi
 if test x"$kex_sidh_cln16" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_SIDH_CLN16"
+fi
+
+if test x"$kex_rlce" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_rlce"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLCE"
 fi
 
 SRCDIR=${SRCDIR}" src/sig"
@@ -238,7 +244,7 @@ AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_CLN16)
 AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
-
+AC_SUBST(USE_KEX_RLCE)
 
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile
