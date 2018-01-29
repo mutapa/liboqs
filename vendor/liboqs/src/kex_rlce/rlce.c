@@ -449,6 +449,7 @@ void RLCE_free_pk(RLCE_public_key_t pk) {
 
 int pk2B (RLCE_public_key_t pk, unsigned char pkB[], unsigned int *blen) {
   int i, ret;
+  ret = 0;
   if (blen[0]<pk->para[18]) return KEYBYTE2SMALL;
   pkB[0]= (pk->para[10])|(pk->para[9]<<4);
   unsigned int nplusw=pk->para[0]+pk->para[2];
@@ -1089,7 +1090,8 @@ int RLCE_decrypt(unsigned char cipher[], unsigned long long clen, RLCE_private_k
   int codeDim = k+zeroLen;
   int nplusw = n+w;
   int nminusw = n-w;
-  int i, j, ii, ret;
+  int i, j, ii;
+  int ret = 0;
   vector_t cipherFE=vec_init(nplusw);
   if ((sk->para[3])==10) ret=B2FE10(cipher, clen, cipherFE);
   if ((sk->para[3])==11) ret=B2FE11(cipher, clen, cipherFE);
@@ -1311,7 +1313,7 @@ int RLCE_decrypt(unsigned char cipher[], unsigned long long clen, RLCE_private_k
   
   /* BEGIN convert feildElement vector to padded message bytes of k1+k2+k3 */
   unsigned short kPlust=k+t; 
-  vector_t FE_vec;
+  vector_t FE_vec = vec_init(t);
   int paddedLen=sk->para[6]+sk->para[7]+sk->para[8];
   if ((sk->para[9] == 0)||(sk->para[9] == 1)) {
     FE_vec=vec_init(kPlust);
