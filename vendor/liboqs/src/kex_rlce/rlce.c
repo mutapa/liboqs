@@ -1387,7 +1387,7 @@ unsigned char* rlceReadFile(char* filename, unsigned long long *blen, int hex) {
   blen[0]=ftell(f);
   rewind(f);  
   char *buffer=calloc(blen[0]+1, sizeof(char)); 
-  fread(buffer, 1,blen[0],f); printf("%s\n", buffer);
+  if (fread(buffer, 1, blen[0], f) != (size_t) blen[0]) { printf("Failed to read file"); }
   fclose(f);
   if (hex==0) return (unsigned char*) buffer;
   if ((blen[0]%2)>0) return NULL;
