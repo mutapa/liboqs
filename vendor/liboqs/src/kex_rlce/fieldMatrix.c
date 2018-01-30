@@ -363,7 +363,7 @@ int RLCE_MGF(unsigned char mgfseed[], int mgfseedLen,
 
 int B2FE10 (unsigned char bytes[], unsigned int BLen, vector_t FE) {
   int vecLen =FE->size;  
-  if (10*vecLen>(int)8*BLen) {
+  if (10*vecLen>(int)(8*BLen)) {
     return BYTEVECTORTOOSMALL;
   }
   int j=0;
@@ -419,7 +419,7 @@ int B2FE10 (unsigned char bytes[], unsigned int BLen, vector_t FE) {
 
 int FE2B10 (vector_t FE, unsigned char bytes[], unsigned int BLen) {
   int vecLen =FE->size;
-  if ((8*BLen) < (vecLen *10)) {
+  if ((int)(8*BLen) < (vecLen *10)) {
     return BYTEVECTORTOOSMALL;
   }
   int used = 0;
@@ -471,7 +471,7 @@ int FE2B10 (vector_t FE, unsigned char bytes[], unsigned int BLen) {
 
 int B2FE11 (unsigned char bytes[], unsigned int BLen, vector_t FE) {
   int vecLen =FE->size;  
-  if (11*vecLen>(int)8*BLen) {
+  if (11*vecLen>(int)(8*BLen)) {
     return BYTEVECTORTOOSMALL;
   }
   int j=0;
