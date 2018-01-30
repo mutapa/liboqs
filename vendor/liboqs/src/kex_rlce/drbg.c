@@ -278,7 +278,7 @@ int hash_DRBG_Generate(hash_drbg_state_t drbgState,drbg_Input_t drbgInput,
   /* the following implements Hashgen Process: for 
    *(returned_bits) = Hashgen (requested_number_of_bits, V). 
    */
-  if (req_no_of_bytes>drbgState->max_B_per_req) {
+  if ((int)req_no_of_bytes>drbgState->max_B_per_req) {
     return DRBGREQ2MANYB;
   }
   unsigned char data[drbgState->seedlen];
@@ -377,7 +377,7 @@ int hash_DRBG_Reseed(hash_drbg_state_t drbgState, drbg_Input_t drbgInput){
 		     drbgState->C, drbgState->seedlen);
   drbgState->reseed_counter=1;
   return ret;
-};
+}
 
 
 int hash_DRBG(hash_drbg_state_t drbgState, drbg_Input_t drbgInput,
@@ -490,7 +490,7 @@ int block_cipher_df(int aestype,unsigned char input[], uint32_t inputlen,
   const unsigned char *Kf =(unsigned char *)"\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f";
   memcpy(key->key, Kf, (key->keylen)*sizeof(unsigned char));
   memcpy(&(IV[16]), S, sLen*sizeof(unsigned char));
-  while (tempLen < key->keylen+16) {
+  while (tempLen <(unsigned int)( key->keylen+16)) {
     IV[0]=(i>>24) & 0xFF;
     IV[1]=(i>>16) & 0xFF;
     IV[2]=(i>>8) & 0xFF;
@@ -544,7 +544,7 @@ int ctr_DRBG_Update (unsigned char provided_data[], unsigned short dataLen, ctr_
   aeskey_free(key);
   unsigned long long * templong =(unsigned long long*) temp;
   unsigned long long * provided = (unsigned long long*) provided_data;
-  for (i=0; i<dataLen/sizeof(unsigned long long); i++) {
+  for (i=0; i<(int)(dataLen/sizeof(unsigned long long)); i++) {
     templong[i] ^=provided[i];
   }
   memcpy(drbgState->Key, temp, ((drbgState->aestype)/8)*sizeof(unsigned char));
@@ -576,7 +576,7 @@ int ctr_DRBG_Instantiate_algorithm(ctr_drbg_state_t drbgState, drbg_Input_t drbg
     }
     memcpy(personString,  drbgInput->personalization_string, len*sizeof(unsigned char));
   }
-  for (i=0; i<seedlen/sizeof(unsigned long long); i++) {
+  for (i=0; i<(int)(seedlen/sizeof(unsigned long long)); i++) {
     seedlong[i] = entropylong[i] ^ perlong[i];
   }
   memset(drbgState->V, 0,16*sizeof(unsigned char));
@@ -628,7 +628,7 @@ int ctr_DRBG_Reseed(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput){
   ctr_DRBG_Update(add, drbgState->seedlen, drbgState);
   drbgState->reseed_counter = 1;
   return 0;
-};
+}
 
 /* implements NIST SP800-90Ar1 Section 10.2.1.4.2 Reseeding When a Derivation Function is Used */
 int ctr_DRBG_Reseed_DF(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput){
@@ -645,7 +645,7 @@ int ctr_DRBG_Reseed_DF(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput){
   ctr_DRBG_Update(seed, drbgState->seedlen, drbgState);
   drbgState->reseed_counter = 1;
   return 0;
-};
+}
 
 /* implement 10.2.1.5.1 Generating Pseudorandom Bits When a Derivation Function is Not Used */
 int ctr_DRBG_Generate(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
