@@ -470,7 +470,8 @@ int pk2B (RLCE_public_key_t pk, unsigned char pkB[], unsigned int *blen) {
 int sk2B (RLCE_private_key_t sk, unsigned char skB[], unsigned int *blen) {
   unsigned int sklen =sk->para[17];
   if (blen[0]<sklen) return KEYBYTE2SMALL;   
-  int i, j,ret;
+  int i, j;
+  int ret = 0;
   int n=sk->para[0];
   int k=sk->para[1];
   int w=sk->para[2];
@@ -553,7 +554,8 @@ RLCE_private_key_t B2sk(const unsigned char binByte[], unsigned long long blen) 
     RLCE_free_sk(sk);
     return NULL;
   }
-  int i,j,ret;
+  int i, j;
+  int ret = 0;
   int n=sk->para[0];
   int k=sk->para[1];
   int w=sk->para[2];
