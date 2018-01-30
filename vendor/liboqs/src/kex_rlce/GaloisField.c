@@ -123,7 +123,7 @@ int GF_addF2vec(field_t x, field_t vec2[],field_t vec3[], int vecSize){
   int i, longsize;
   longsize = sizeof(unsigned long long);
   field_t vec1[longsize/sizeof(field_t)];
-  for (i=0;i<longsize/sizeof(field_t); i++) vec1[i]=x;
+  for (i=0;i<(int)(longsize/sizeof(field_t)); i++) vec1[i]=x;
   if (vec3==NULL) vec3=vec2;
   unsigned int size=(sizeof(field_t)*vecSize)/longsize;
   unsigned long long* longvec1=(unsigned long long*) vec1;
