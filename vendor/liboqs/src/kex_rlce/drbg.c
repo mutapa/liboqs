@@ -246,6 +246,7 @@ int hash_DRBG_Generate(hash_drbg_state_t drbgState,drbg_Input_t drbgInput,
     return DRBGRESEEDREQUIRED;
   }
   void (*sha)(unsigned char[], int, unsigned int[]);
+   sha = sha1_md;
   if (drbgState->shatype == 0) {
     sha = sha1_md;
   } else if (drbgState->shatype == 1) {
