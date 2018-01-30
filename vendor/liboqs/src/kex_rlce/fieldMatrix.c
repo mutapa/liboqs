@@ -241,6 +241,7 @@ int getShortIntegers(unsigned char randB[], int nRB,unsigned short output[], int
     output[i]= (output[i]<<8);
     output[i]= output[i] | randB[2*i+1];
   }
+  if (nRB == 0) {}
   return 0; 	 
 }
 
@@ -284,7 +285,7 @@ void I2BS (unsigned int X, unsigned char S[], int slen) {
 
 int BS2I (unsigned char S[], int slen) {
   unsigned int i, X=0;
-  for (i=0; i<slen; i++) X=(X<<8)^S[i];
+  for (i=0; i<(unsigned int)slen; i++) X=(X<<8)^S[i];
   return X;
 }
 
@@ -362,7 +363,7 @@ int RLCE_MGF(unsigned char mgfseed[], int mgfseedLen,
 
 int B2FE10 (unsigned char bytes[], unsigned int BLen, vector_t FE) {
   int vecLen =FE->size;  
-  if (10*vecLen>8*BLen) {
+  if (10*vecLen>(int)8*BLen) {
     return BYTEVECTORTOOSMALL;
   }
   int j=0;
@@ -470,7 +471,7 @@ int FE2B10 (vector_t FE, unsigned char bytes[], unsigned int BLen) {
 
 int B2FE11 (unsigned char bytes[], unsigned int BLen, vector_t FE) {
   int vecLen =FE->size;  
-  if (11*vecLen>8*BLen) {
+  if (11*vecLen>(int)8*BLen) {
     return BYTEVECTORTOOSMALL;
   }
   int j=0;
@@ -570,7 +571,7 @@ int B2FE11 (unsigned char bytes[], unsigned int BLen, vector_t FE) {
 
 int FE2B11 (vector_t FE, unsigned char bytes[], unsigned int BLen) {
   int vecLen =FE->size;
-  if ((8*BLen) < (vecLen *11)) {
+  if ((int)(8*BLen) < (vecLen *11)) {
     return BYTEVECTORTOOSMALL;
   }
   int used = 0;
