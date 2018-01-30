@@ -97,6 +97,7 @@ field_t trace(field_t a, int m) {
     alpha =GF_mul(alpha,alpha,m);
     ret ^= alpha;
   }
+  if (a) {}
   return ret;
 }
 
@@ -164,7 +165,7 @@ int find_deg2_roots_rt(poly_t p, field_t pRoots[], int m) {
   for (i=0; i<m; i++) if (positions[i]==m) pos0=i;  
   for (i=0;i<m;i++) rows1[i] ^= ((rows[i] >>(m-pos0)) & 0x0001);
   for (i=m-1;i>=0;i--) {
-    if (i==pos0) {
+    if (i==(int)pos0) {
       pRoots[0] = (pRoots[0]<<1);
       pRoots[1] = (pRoots[1]<<1) ^ 0x0001;
     } else {
@@ -387,7 +388,7 @@ static int affine4_roots(field_t a, field_t b, field_t c, field_t *roots, int m)
     for (i=0; i<m; i++) if (positions[i]==m) pos0=i;
     for (i=0;i<m;i++) rows1[i] ^= ((rows1[i] >>(m-pos0)) & 0x0001);    
     for (i=m-1;i>=0;i--) {
-      if (i==pos0) {
+      if (i==(int)pos0) {
 	roots[0] = (roots[0]<<1);
 	roots[1] = (roots[1]<<1) ^ 0x0001;
       } else {
@@ -419,12 +420,12 @@ static int affine4_roots(field_t a, field_t b, field_t c, field_t *roots, int m)
     }
     
     for (i=m-1;i>=0;i--) {
-      if (i==pos0) {
+      if (i==(int)pos0) {
 	roots[0] = (roots[0]<<1);
 	roots[1] = (roots[1]<<1);
 	roots[2] = (roots[2]<<1) ^ 0x0001;
 	roots[3] = (roots[3]<<1)^ 0x0001;
-      } else if (i==pos1) {
+      } else if (i==(int)pos1) {
 	roots[0] = (roots[0]<<1);
 	roots[1] = (roots[1]<<1) ^ 0x0001;
 	roots[2] = (roots[2]<<1);
