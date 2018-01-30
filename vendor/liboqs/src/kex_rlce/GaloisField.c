@@ -114,7 +114,7 @@ int GF_addvec(field_t vec1[], field_t vec2[],field_t vec3[], int vecSize){
   unsigned long long* longvec1=(unsigned long long*) vec1;
   unsigned long long* longvec2=(unsigned long long*) vec2;
   unsigned long long* longvec3=(unsigned long long*) vec3;
-  for (i=0; i<size; i++) longvec3[i]= longvec2[i] ^ longvec1[i];
+  for (i=0; i<(int)size; i++) longvec3[i]= longvec2[i] ^ longvec1[i];
   for (i=(longsize*size)/sizeof(field_t); i<vecSize; i++) vec3[i] =vec2[i]^vec1[i];
   return 0;
 }
@@ -129,7 +129,7 @@ int GF_addF2vec(field_t x, field_t vec2[],field_t vec3[], int vecSize){
   unsigned long long* longvec1=(unsigned long long*) vec1;
   unsigned long long* longvec2=(unsigned long long*) vec2;
   unsigned long long* longvec3=(unsigned long long*) vec3;
-  for (i=0; i<size; i++) longvec3[i]= longvec2[i] ^ longvec1[0];
+  for (i=0; i<(int)size; i++) longvec3[i]= longvec2[i] ^ longvec1[0];
   for (i=(longsize*size)/sizeof(field_t); i<vecSize; i++) vec3[i] =vec2[i]^x;
   return 0;
 }
@@ -318,7 +318,7 @@ int getMatrixAandAinv(matrixA_t mat, matrixA_t matInv,
     j=j+4;
   }
   return 0;
-};
+}
 
 void GF_expvec(field_t vec[], int size, int m) {
   GF_init_logexp_table(m);
