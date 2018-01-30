@@ -276,7 +276,8 @@ int GGIFFT(int i,vector_t base, field_t beta,vector_t output,poly_t r,matrix_t s
   }
   for(j=0;j<=i;j++) sbetai^=GF_exp(((1<<j)*betailog+s[j])%(fieldSize(m)-1),m);
   
-  unsigned short sbetailog,sbetalog;
+  unsigned short sbetailog;
+  unsigned short sbetalog = 0;
   sbetailog=fieldSize(m)-1-GF_log(sbetai,m);
   if (beta!=0) sbetalog=GF_log(sbeta,m);
   
