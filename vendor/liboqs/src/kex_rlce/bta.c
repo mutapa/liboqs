@@ -161,7 +161,7 @@ int find_deg2_roots_rt(poly_t p, field_t pRoots[], int m) {
   memcpy(rows0, rows, m*sizeof(field_t)); /* for 0 */
   memcpy(rows1, rows, m*sizeof(field_t)); /* for 1 */  
   memset(pRoots, 0, 2*sizeof(field_t));
-  unsigned int pos0;
+  unsigned int pos0 = 0;
   for (i=0; i<m; i++) if (positions[i]==m) pos0=i;  
   for (i=0;i<m;i++) rows1[i] ^= ((rows[i] >>(m-pos0)) & 0x0001);
   for (i=m-1;i>=0;i--) {
@@ -378,7 +378,8 @@ static int affine4_roots(field_t a, field_t b, field_t c, field_t *roots, int m)
     return 1;
   }
   memset(roots, 0, 4*sizeof(field_t));
-  unsigned int pos0, pos1;
+  unsigned int pos0 = 0;
+  unsigned int pos1 = 0;
   unsigned int flag = 0;
   field_t rows0[m],rows1[m];
   memcpy(rows0, rows, m*sizeof(field_t)); /* for 00 or 0 (ctr=1) */
@@ -515,7 +516,8 @@ int find_deg4_roots(poly_t p, field_t pRoots[], int m) {
     return ret;
   }
 
-  unsigned int alog, clog, elog;
+  unsigned int alog, clog;
+  unsigned int elog = 0;
   field_t roots[4];
   memset(roots, 0, 4*sizeof(field_t));
   if (c !=0 ) {
