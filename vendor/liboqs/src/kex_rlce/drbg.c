@@ -58,6 +58,7 @@
  */
 
 #include "rlce.h"
+#include <openssl/aes.h>
 
 /* num1: a big integer
  * num2: a big integer
