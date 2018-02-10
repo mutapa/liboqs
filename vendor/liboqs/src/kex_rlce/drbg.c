@@ -58,6 +58,7 @@
  */
 
 #include "rlce.h"
+#include "aes.c"
 
 /* num1: a big integer
  * num2: a big integer
