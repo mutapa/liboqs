@@ -58,7 +58,7 @@
  */
 
 #include "rlce.h"
-#include <openssl/aes.h>
+#include "aes.c"
 
 /* num1: a big integer
  * num2: a big integer
@@ -456,7 +456,7 @@ int BCC(aeskey_t key, unsigned char data[], unsigned int datalen, unsigned char 
   for (i=0; i<n; i++) {
     input_long[0] = output_long[0] ^ data_long[2*i];
     input_long[1] = output_long[1] ^ data_long[2*i+1];
-    AES_encrypt(input_block, output, key);
+    AES_encrypt_RLCE(input_block, output, key);
   }
   return 0;
 }
@@ -483,7 +483,7 @@ int block_cipher_df(int aestype,unsigned char input[], uint32_t inputlen,
   S[7]=outputlen & 0xFF;
   memcpy(&(S[8]), input, inputlen*sizeof(unsigned char));
   S[8+inputlen]=0x80;
-  aeskey_t key = aeskey_init(aestype);
+  aeskey_t key = aeskey_init_RLCE(aestype);
   unsigned char temp[key->keylen+24];
   unsigned int tempLen =0;
   unsigned char IV[16+sLen];
@@ -509,11 +509,11 @@ int block_cipher_df(int aestype,unsigned char input[], uint32_t inputlen,
   memset(newtemp, 0, (outputlen+16)*sizeof(unsigned char));
   unsigned int newtempLen=0;
   while (newtempLen<outputlen) {
-    AES_encrypt(X, &(newtemp[newtempLen]), key);
+    AES_encrypt_RLCE(X, &(newtemp[newtempLen]), key);
     memcpy(X, &(newtemp[newtempLen]), 16*sizeof(unsigned char));
     newtempLen += 16;
   }
-  aeskey_free(key);
+  aeskey_free_RLCE(key);
   memcpy(output, newtemp, outputlen*sizeof(unsigned char));
   return 0;
 }
@@ -530,7 +530,7 @@ int ctr_DRBG_Update (unsigned char provided_data[], unsigned short dataLen, ctr_
   unsigned char one[1];
   one[0]=0x01;
   unsigned char inc[drbgState->ctr_len];
-  aeskey_t key=aeskey_init(drbgState->aestype);
+  aeskey_t key=aeskey_init_RLCE(drbgState->aestype);
   memcpy(key->key,drbgState->Key,((drbgState->aestype)/8)*sizeof(unsigned char) );
   while (templen<drbgState->seedlen) {
     if (drbgState->ctr_len < 16) {
@@ -540,10 +540,10 @@ int ctr_DRBG_Update (unsigned char provided_data[], unsigned short dataLen, ctr_
     } else {
       big_add(drbgState->V, 16, one, 1);/* V = V+1 mod 2^{128} */
     }
-    AES_encrypt(drbgState->V, &(temp[templen]),key);
+    AES_encrypt_RLCE(drbgState->V, &(temp[templen]),key);
     templen += 16;
   }
-  aeskey_free(key);
+  aeskey_free_RLCE(key);
   unsigned long long * templong =(unsigned long long*) temp;
   unsigned long long * provided = (unsigned long long*) provided_data;
   for (i=0; i<(int)(dataLen/sizeof(unsigned long long)); i++) {
@@ -667,7 +667,7 @@ int ctr_DRBG_Generate(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
   one[0]=0x01;
   int ctr_len=drbgState->ctr_len;
   unsigned char inc[ctr_len];
-  aeskey_t key=aeskey_init(drbgState->aestype);
+  aeskey_t key=aeskey_init_RLCE(drbgState->aestype);
   memcpy(key->key,drbgState->Key,((drbgState->aestype)/8)*sizeof(unsigned char) );
   int loop = req_no_of_bytes / 16;
   int rem= req_no_of_bytes % 16;
@@ -680,7 +680,7 @@ int ctr_DRBG_Generate(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
     } else {
       big_add(drbgState->V, 16, one, 1);
     }
-    AES_encrypt(drbgState->V, &(returned_bytes[16*i]), key);
+    AES_encrypt_RLCE(drbgState->V, &(returned_bytes[16*i]), key);
   }
   if (rem>0) {
     if (ctr_len < 16) {
@@ -690,10 +690,10 @@ int ctr_DRBG_Generate(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
     } else {
       big_add(drbgState->V, 16, one, 1);
     }
-    AES_encrypt(drbgState->V, temp, key);
+    AES_encrypt_RLCE(drbgState->V, temp, key);
     memcpy(returned_bytes+16*loop, temp, rem*sizeof(unsigned char));
   }
-  aeskey_free(key);
+  aeskey_free_RLCE(key);
   ctr_DRBG_Update(add, drbgState->seedlen, drbgState);
   (drbgState->reseed_counter)++;
   return 0;
@@ -720,7 +720,7 @@ int ctr_DRBG_Generate_DF(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
   one[0]=0x01;
   int ctr_len=drbgState->ctr_len;
   unsigned char inc[ctr_len];
-  aeskey_t key=aeskey_init(drbgState->aestype);
+  aeskey_t key=aeskey_init_RLCE(drbgState->aestype);
   memcpy(key->key,drbgState->Key,((drbgState->aestype)/8)*sizeof(unsigned char) );
   int loop = req_no_of_bytes / 16;
   int rem= req_no_of_bytes % 16;
@@ -733,7 +733,7 @@ int ctr_DRBG_Generate_DF(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
     } else {
       big_add(drbgState->V, 16, one, 1);
     }
-    AES_encrypt(drbgState->V, &(returned_bytes[16*i]), key);
+    AES_encrypt_RLCE(drbgState->V, &(returned_bytes[16*i]), key);
   }
   if (rem>0) {
     if (ctr_len < 16) {
@@ -743,11 +743,11 @@ int ctr_DRBG_Generate_DF(ctr_drbg_state_t drbgState, drbg_Input_t drbgInput,
     } else {
       big_add(drbgState->V, 16, one, 1);
     }
-    AES_encrypt(drbgState->V, temp, key);
+    AES_encrypt_RLCE(drbgState->V, temp, key);
     memcpy(returned_bytes+16*loop, temp, rem*sizeof(unsigned char));
   }
  
-  aeskey_free(key);
+  aeskey_free_RLCE(key);
   ctr_DRBG_Update(add, drbgState->seedlen, drbgState);
   (drbgState->reseed_counter)++;
   return 0;
