@@ -40,7 +40,7 @@ OQS_KEX *OQS_KEX_rlce_new(OQS_RAND *rand)
 	k->named_parameters = 0;
 	k->rand = rand;
 	k->params = NULL;
-	k->alice_0 = & OQS_KEX_rlce_alice_0;
+	k->alice_0 = &OQS_KEX_rlce_alice_0;
 	k->bob = &OQS_KEX_rlce_bob;
 	k->alice_1 = &OQS_KEX_rlce_alice_1;
 	k->alice_priv_free = &OQS_KEX_rlce_alice_priv_free;
