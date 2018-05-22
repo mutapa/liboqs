@@ -51,11 +51,11 @@ script:
      else
          echo -e '+\057 MAKE FAILED'; false;
       fi;
-    - if [ -z "$CROSS_COMPILE" ]; then
-          if make test; then
-              echo -e '+\057\057 MAKE TEST OK';
-          else
-              echo -e '+\057\057 MAKE TEST FAILED'; false;
-          fi;
-      fi
+    #- if [ -z "$CROSS_COMPILE" ]; then
+    #      if make test; then
+    #          echo -e '+\057\057 MAKE TEST OK';
+    #      else
+    #          echo -e '+\057\057 MAKE TEST FAILED'; false;
+    #      fi;
+    #  fi
     - cd ..
